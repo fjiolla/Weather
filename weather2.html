@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/ff01ec0bea.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="weather2.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="weather-container">
+        <div class="weather-content" id="weather-content">
+            <div class="panel">
+                <form id="locationinput">
+                    <i class="fas fa-location-dot"></i>
+                    <input type="text" class="search" placeholder="Search location..."/>
+                    <button type="submit" class="fas fa-search"></button>
+                    </button>
+                </form>
+            </div>
+            <ul class="cities">
+                <li class="city">Ahmedabad</li>
+                <li class="city">Vadodara</li>
+                <li class="city">Surat</li>
+                <li class="city">Vasad</li>
+            </ul>
+            <div class="weather-intro">
+                <div class="weather-temp-condition">
+                    <h1 class="temperature">23&#176;</h1>
+                    <div class="temp-icon-description">
+                        <img src="weathericons/raining.png" class="icon" alt="weather-icon">
+                        <span class="condition">Cloudy</span>
+                    </div>
+                </div>
+                <div class="city-time">
+                    <h1 class="name">Ahmedabad,Vastrapur</h1>
+                    <small>
+                        <span class="time">10:30</span>
+                        <span class="day">Tuesday</span>
+                        <span class="date">20th</span>
+                        <span class="month">March</span>
+                    </small>
+                </div>
+            </div>
+            <div class="list-content">
+                <ul>
+                    <li>
+                        <img src="weathericons/raining.png" class="tempicon" />
+                        <span class="change-list">Now</span>
+                        <span class="temp">23&#176;</span>
+                    </li>
+                    <li>
+                        <img src="weathericons/raining.png" class="tempicon" />
+                        <span class="change-list">11:00</span>
+                        <span class="temp">23&#176;</span>
+                    </li>
+                    <li>
+                        <img src="weathericons/raining.png" class="tempicon" />
+                        <span class="change-list">12:00</span>
+                        <span class="temp">23&#176;</span>
+                    </li>
+                    <li>
+                        <img src="weathericons/raining.png" class="tempicon" />
+                        <span class="change-list">1:00</span>
+                        <span class="temp">23&#176;</span>
+                    </li>
+                    <li>
+                        <img src="weathericons/raining.png" class="tempicon" />
+                        <span class="change-list">2:00</span>
+                        <span class="temp">23&#176;</span>
+                    </li>
+                    <li>
+                        <img src="weathericons/raining.png" class="tempicon" />
+                        <span class="change-list">3:00</span>
+                        <span class="temp">23&#176;</span>
+                    </li>
+                    <li>
+                        <img src="weathericons/raining.png" class="tempicon" />
+                        <span class="change-list">4:00</span>
+                        <span class="temp">23&#176;</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="progress-bar-container">
+                <h3 class="info-temp">5-Day Forecast</h3>
+                <hr>
+                <div class="progress-bar">
+                    <div class="progress-bar-temp">
+                        <h3 class="tempperday">Today</h3>
+                        <img src="weathericons/raining.png" class="progress-bar-icon"/>
+                        <h2 class="tempday">23&#176;</h2>
+                        <div class="progress-line">
+                            <span class="temp-1"></span>
+                        </div>
+                    </div>
+                    <div class="progress-bar-temp">
+                        <h3 class="tempperday">Wed</h3>
+                        <img src="weathericons/raining.png" class="progress-bar-icon" />
+                        <h2 class="tempday">19&#176;</h2>
+                        <div class="progress-line">
+                            <span class="temp-2"></span>
+                        </div>
+                    </div>
+                    <div class="progress-bar-temp">
+                        <h3 class="tempperday">Thur</h3>
+                        <img src="weathericons/raining.png" class="progress-bar-icon" />
+                        <h2 class="tempday">28&#176;</h2>
+                        <div class="progress-line">
+                            <span class="temp-3"></span>
+                        </div>
+                    </div>
+                    <div class="progress-bar-temp">
+                        <h3 class="tempperday">Fri</h3>
+                        <img src="weathericons/raining.png" class="progress-bar-icon" />
+                        <h2 class="tempday">35&#176;</h2>
+                        <div class="progress-line">
+                            <span class="temp-4"></span>
+                        </div>
+                    </div>
+                    <div class="progress-bar-temp">
+                        <h3 class="tempperday">Sat</h3>
+                        <img src="weathericons/raining.png" class="progress-bar-icon" />
+                        <h2 class="tempday">24&#176;</h2>
+                        <div class="progress-line">
+                            <span class="temp-5"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="weather-navigation">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+    </div>
+    <a href="test.html" id="second-page-link" style="display: none;"></a>
+    <script src="weather2.js" defer></script>
+</body>
+
+</html>
