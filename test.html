@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Text Thickness Example</title>
   <link href="test.css" rel="stylesheet">
-  <script src="test.js"></script>
 </head>
 
 <body>
@@ -14,12 +13,8 @@
     <div class="main">
       <nav>
         <ul class="options">
-          <button class="hourly">today</button>
-          <button class="week active">week</button>
-        </ul>
-        <ul class="options units">
-          <button class="celcius active">°C</button>
-          <button class="fahrenheit">°F</button>
+          <button class="hourly active">today</button>
+          <button class="week">week</button>
         </ul>
       </nav>
       <div class="cards" id="weather-cards"></div>
@@ -57,10 +52,7 @@
           <div class="card2">
             <h4 class="card-heading">Wind Direction</h4>
             <div class="content">
-              <div class="compass-container">
-                <img src="weathericons/compass-3119880_1280.png" class="compass" alt="compass-image"/>
-                <div class="arrow rotate-45"></div>
-              </div>              
+              <p class="winddirection">NPW</p>  
             </div>
           </div>
           <div class="card2">
@@ -100,5 +92,6 @@
     <span class="dot active"></span>
 </div>    
   <a href="weather2.html" id="second-page-link" style="display: none;"></a>
+  <script src="test.js"></script>
 </body>
 </html>

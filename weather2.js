@@ -1,25 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
     const dots = document.querySelectorAll('.dot');
+    const locationInput = document.getElementById('locationinput');
+    const cities = document.querySelector('.cities');
 
-    // Function to handle dot click
     dots.forEach((dot, index) => {
         dot.addEventListener('click', function () {
-            // Remove active class from all dots
             dots.forEach(dot => dot.classList.remove('active'));
-            // Add active class to clicked dot
             dot.classList.add('active');
-            // Navigate to the second page
             if (index === 1) {
                 document.getElementById('second-page-link').click();
             }
         });
     });
-});
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const locationInput = document.getElementById('locationinput');
-    const cities = document.querySelector('.cities');
 
     locationInput.addEventListener('click', function (event) {
         cities.classList.toggle('active');
@@ -27,24 +19,27 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 const bg = document.querySelector('.weather-container');
-const app = document.querySelector('.weather-content');
+const textElements = document.querySelectorAll('.temperature, .condition, .panel i, .panel button, .name, .time, .day, .date, .month, .change-list, .temp, .tempperday, .tempday, .search, .info-temp, .city, .progress-line');
+const textLower = document.querySelectorAll('.temperature, .condition, .name, .time, .day, .date, .month, .tempperday, .tempday, .info-temp');
+const btn1 = document.querySelector('.search');
+const btn2 = document.querySelector('.panel button');
+const cities = document.querySelectorAll('.city');
 const search = document.querySelector('.search');
 const form = document.getElementById('locationinput');
-const cities = document.querySelectorAll('.city');
 const temp = document.querySelector('.temperature');
 const icon = document.querySelector('.icon');
 const condition = document.querySelector('.condition');
 const placename = document.querySelector('.name');
-const placetime = document.querySelector('.time');
 const date = document.querySelector('.date');
-const day = document.querySelector('.day')
-const month = document.querySelector('.month')
-const tempperhouricon = document.querySelectorAll('.tempicon')
-const tempperhourtime = document.querySelectorAll('.change-list')
-const tempperhour = document.querySelectorAll('.temp')
-const tempperday = document.querySelectorAll('.tempperday')
-const tempperdayicon = document.querySelectorAll('.progress-bar-icon')
-const tempday = document.querySelectorAll('.tempday')
+const day = document.querySelector('.day');
+const month = document.querySelector('.month');
+const tempperhouricon = document.querySelectorAll('.tempicon');
+const tempperhourtime = document.querySelectorAll('.change-list');
+const tempperhour = document.querySelectorAll('.temp');
+const tempperday = document.querySelectorAll('.tempperday');
+const tempperdayicon = document.querySelectorAll('.progress-bar-icon');
+const tempday = document.querySelectorAll('.tempday');
+
 
 let cityInput = "Ahmedabad";
 
@@ -53,6 +48,7 @@ cities.forEach((city) => {
         cityInput = e.target.innerHTML;
         fetchWeatherData();
         fetchData();
+        handleSubmit();
     });
 })
 
@@ -63,26 +59,16 @@ form.addEventListener('submit', (e) => {
         cityInput = search.value;
         fetchWeatherData();
         fetchData();
+        handleSubmit();
         search.value = "";
     }
     e.preventDefault();
 });
 
-form.addEventListener('submit', (e) => {
-    // Retrieve the value from the search input
-    const cityInput = search.value.trim(); // Trim to remove any leading or trailing whitespace
-    
-    // Set the cityInput value to the 'search' key in local storage
-    localStorage.setItem('search', cityInput);
-    
-    // Check if the location data is successfully stored in local storage
-    if (localStorage.getItem('search') !== null) {
-        console.log('Location data is successfully stored in local storage.');
-    } else {
-        console.error('Failed to store location data in local storage.');
-    }
-});
-
+function handleSubmit() {
+    localStorage.setItem('search', JSON.stringify(cityInput));
+    console.log("Stored in localStorage:", cityInput);
+}
 
 function getCurrentDateAndMonth() {
     const currentDate = new Date();
@@ -107,10 +93,9 @@ function dayOfTheWeek() {
     ];
     return weekday[currentDate.getDay()];
 }
-document.addEventListener('DOMContentLoaded', function () {
-    const currentDay = dayOfTheWeek();
-    day.textContent = currentDay;
-});
+
+const currentDay = dayOfTheWeek();
+day.textContent = currentDay;
 
 function updateTime() {
     const now = new Date();
@@ -123,49 +108,38 @@ function updateTime() {
 updateTime();
 setInterval(updateTime, 1000);
 
-
 function fetchWeatherData() {
-    fetch(`http://api.weatherapi.com/v1/forecast.json?key=6e588b6ddd9e4dd980974334243103&q=${cityInput}&days=7&aqi=no&alerts=no`)
+    fetch(`http://api.weatherapi.com/v1/forecast.json?key=8a8f10d7c5f645e2a0e94049241404&q=${cityInput}&days=5&aqi=no&alerts=no`)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-
-            // Accessing today's weather data
             const today = data.forecast.forecastday[0];
             const currentHour = new Date().getHours();
 
-            // Displaying today's date
             const todayDate = new Date(today.date);
             date.textContent = todayDate.getDate();
             month.textContent = todayDate.toLocaleString('en-us', { month: 'long' });
+            day.textContent = dayOfTheWeek();
 
-            // Displaying today's day
-            const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            day.textContent = weekday[todayDate.getDay()];
-
-            // Displaying hourly forecast from the current hour
             for (let i = currentHour; i < currentHour + 7; i++) {
                 const hourIndex = i % 24;
                 const hour = today.hour[hourIndex];
                 tempperhour[i - currentHour].innerHTML = hour.temp_c + "&deg;";
                 tempperhourtime[i - currentHour].textContent = hour.time.split(' ')[1];
-                tempperhouricon[i - currentHour].src = hour.condition.icon; 
+                tempperhouricon[i - currentHour].src = hour.condition.icon;
             }
 
-            // Displaying 5-day forecast
-            const forecasts = data.forecast.forecastday.slice(0, 5); // Extracting first 5 days
+            const forecasts = data.forecast.forecastday.slice(0, 5);
             forecasts.forEach((forecast, index) => {
                 tempperday[index].textContent = new Date(forecast.date).toLocaleString('en-us', { weekday: 'short' });
                 tempperdayicon[index].src = forecast.day.condition.icon;
                 tempday[index].innerHTML = forecast.day.avgtemp_c + "&deg;";
 
-                const temp = forecast.day.avgtemp_c; // Average temperature for the day
+                const temp = forecast.day.avgtemp_c;
                 const progressBar = document.querySelector(`.temp-${index + 1}`);
-                const width = (temp / 100) * 16; // Assuming 100 degrees is the maximum temperature
-                progressBar.style.setProperty('--progress-width', `${width}em`); // Set custom property
+                const width = (temp / 57) * 16;
+                progressBar.style.setProperty('--progress-width', `${width}em`);
                 progressBar.classList.add('animate-progress');
 
-                // Change color based on temperature range
                 if (temp < 20) {
                     progressBar.style.backgroundColor = 'rgba(135,206,235,0.3)';
                 } else if (temp >= 20 && temp <= 30) {
@@ -185,16 +159,122 @@ function fetchData() {
     fetch(`http://api.weatherapi.com/v1/current.json?key=6e588b6ddd9e4dd980974334243103&q=${cityInput}&aqi=no`)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-
-            temp.innerHTML = data.current.temp_c + "&#176";
+            temp.innerHTML = data.current.temp_c + "&#176;";
             condition.innerHTML = data.current.condition.text;
             placename.innerHTML = data.location.name;
-
             const iconUrl = data.current.condition.icon;
             icon.src = iconUrl;
+            
+            const conditionText = data.current.condition.text.toLowerCase();
+            const isDay = data.current.is_day === 1;
+
+            if (
+               conditionText.includes('clear') ||
+               conditionText.includes('overcast')
+            )
+            {
+                if (isDay) {
+                    bg.style.backgroundImage = "url('weathericons/clear_day.jpg')";
+                    textElements.forEach(element => {
+                        element.style.color = 'black';
+                    })
+                } else {
+                    bg.style.backgroundImage = "url('weathericons/clear_night.jpg')";
+                    textElements.forEach(element => {
+                        element.style.color = 'white';
+                    })
+                }
+            }
+            else if (
+                conditionText.includes('sunny')
+            ) {
+                bg.style.backgroundImage = "url('weathericons/clear_day.jpg')";
+                textElements.forEach(element => {
+                    element.style.color = 'black';
+                })
+                textLower.forEach(element => {
+                    element.style.color = 'white';
+                })
+                btn1.style.backgroundColor = 'rgba(0, 0, 0, .1)';
+                btn2.style.backgroundColor = 'rgba(0, 0, 0, .1)';
+            }
+            else if (
+                conditionText.includes('cloudy') ||
+                conditionText.includes('overcast')
+            ) {
+                bg.style.backgroundImage = "url('weathericons/cloudy.jpg')";
+                textElements.forEach(element => {
+                    element.style.color = 'black';
+                })
+            } else if (
+                conditionText.includes('rain') ||
+                conditionText.includes('shower') ||
+                conditionText.includes('mist') 
+            ) {
+                bg.style.backgroundImage = "url('weathericons/rain.jpg')";
+            } else if (
+                conditionText.includes('snow')
+            ) {
+                bg.style.backgroundImage = "url('weathericons/snow.jpg')";
+                textElements.forEach(element => {
+                    element.style.color = 'black';
+                })
+            }
+            else {
+                bg.style.backgroundImage = "url('weathericons/clear_day.jpg')";
+                textElements.forEach(element => {
+                    element.style.color = 'black';
+                })
+                textLower.forEach(element => {
+                    element.style.color = 'white';
+                })
+            }
         });
-}       
+}
+
+
+/*
+const WEATHER_CODES = {
+    CLEAR_DAY: [1000, 1003],
+    CLEAR_NIGHT: [1001, 1004],
+    CLOUDY: [1195],
+    RAIN: [1063, 1150, 1153, 1180, 1183, 1186, 1189, 1192, 1198, 1201, 1240, 1243, 1246, 1249, 1252, 1255, 1258, 1261, 1264],
+    SNOW: [1066, 1069, 1072, 1168, 1171, 1174, 1204, 1207, 1210, 1213, 1216, 1219, 1222, 1225, 1237],
+};
+
+function fetchBackgroundImage() {
+    fetch(`http://api.weatherapi.com/v1/current.json?key=6e588b6ddd9e4dd980974334243103&q=${cityInput}&aqi=no`)
+        .then(response => response.json())
+        .then(data => {
+            const weatherCode = data.current.condition.code; 
+            changeBackgroundImage(weatherCode);
+        });
+}
+
+function changeBackgroundImage(weatherCode) {
+    const bg = document.querySelector('.weather-container');
+    const app = document.querySelector('.weather-content');
+
+    if (WEATHER_CODES.CLEAR_DAY.includes(weatherCode)) {
+        bg.style.backgroundImage = "url('weathericons/clear_day.jpg')";
+        app.style.backgroundImage = "url('weathericons/clear_day.jpg')";
+    } else if (WEATHER_CODES.CLEAR_NIGHT.includes(weatherCode)) {
+        bg.style.backgroundImage = "url('weathericons/clear_night.jpg')";
+        app.style.backgroundImage = "url('weathericons/clear_night.jpg')";
+    } else if (WEATHER_CODES.CLOUDY.includes(weatherCode)) {
+        bg.style.backgroundImage = "url('weathericons/cloudy.jpg')";
+        app.style.backgroundImage = "url('weathericons/cloudy.jpg')";
+    } else if (WEATHER_CODES.RAIN.includes(weatherCode)) {
+        bg.style.backgroundImage = "url('weathericons/raining.png')";
+        app.style.backgroundImage = "url('weathericons/raining.png')";
+    } else if (WEATHER_CODES.SNOW.includes(weatherCode)) {
+        bg.style.backgroundImage = "url('weathericons/snow.jpg')";
+        app.style.backgroundImage = "url('weathericons/snow.jpg')";
+    } else {
+        bg.style.backgroundImage = "url('weathericons/snow.jpg')";
+        app.style.backgroundImage = "url('weathericons/snow.jpg')";
+    }
+}*/
 
 fetchData();
 fetchWeatherData();
