@@ -1,0 +1,345 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+body {
+    min-height: 100vh;
+    background: #111;
+}
+
+h1 {
+    font-weight: 400;
+}
+
+.weather-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    background-image: url(weathericons/background3.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+}
+
+.weather-content {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    border-radius: 3em;
+    border: 1px solid rgba(255, 255, 255, .2);
+    align-items: center;
+    background: rgba(255, 255, 255, .0);
+    backdrop-filter: blur(10px);
+}
+
+
+.panel {
+    position: relative;
+    width: 95%;
+    height: 3em;
+    display: flex;
+    justify-self: center;
+    border-bottom: 1px solid rgba(255, 255, 255, .2);
+    margin: auto;
+    margin-top: 0.5em;
+}
+
+.panel form {
+    margin-top: auto;
+    margin-bottom: 2px;
+}
+
+.panel i {
+    font-size: 1.5em;
+    margin: 0.3em 0.2em 0 0.4em;
+    color: rgba(255, 255, 255, .6);
+}
+
+.panel i:hover {
+    transform: scale(1.2);
+}
+
+.search {
+    width: 15em;
+    height: 2.5em;
+    padding-left: 0.3em;
+    border: 0;
+    background-color: rgba(255, 255, 255, .1);
+    color: white;
+    border-radius: 0.3em 0 0 0.3em;
+    opacity: 0.6;
+}
+
+.search:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search:focus {
+    outline: none;
+}
+
+.panel button {
+    width: 2em;
+    height: 2.1em;
+    padding-bottom: 2px;
+    font-size: 1em;
+    background: transparent;
+    border: none;
+    background-color: rgba(255, 255, 255, .06);
+    border-radius: 0 0.3em 0.3em 0;
+    margin-left: -0.22em;
+    color: rgba(255, 255, 255, .6);
+    cursor: pointer;
+}
+
+.panel button:hover {
+    transform: scale(1.05);
+    color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cities {
+    display: none;
+}
+
+.cities.active {
+    display: block;
+    margin-left: 4em;
+}
+
+
+.city {
+    display: flex;
+    width: 14.5em;
+    padding-top: 0.5em;
+    padding-left: 0.3em;
+    background-color: rgba(255, 255, 255, .1);
+    height: 2em;
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.city:last-child {
+    padding-bottom: 1.7em;
+    border-radius: 0 0 0.3em 0.3em;
+}
+
+
+.city:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.weather-intro {
+    position: absolute;
+    bottom: 3em;
+    left: 2em;
+}
+
+.weather-temp-condition {
+    display: inline-flex;
+    align-items: center;
+}
+
+.temperature {
+    font-size: 5em;
+    display: inline-flex;
+}
+
+.temp-icon-description {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 1em;
+}
+
+.temp-icon-description:hover .icon {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.icon {
+    width: 3em;
+    font-size: 1em;
+    display: block;
+}
+
+.city-time {
+    margin-top: -0.5em;
+}
+
+.time,
+.date,
+.day,
+.month {
+    margin-right: 0.1em;
+    font-size: 1.2em;
+}
+
+.name {
+    font-size: 2.5em;
+}
+
+.list-content {
+    position: absolute;
+    display: flex;
+    width: auto;
+    height: auto;
+    top: 6em;
+    left: 35em;
+    border: 0px solid white;
+    background-color: rgba(255, 255, 255, .05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+}
+
+.list-content ul {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+}
+
+.list-content ul li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 0;
+    height: auto;
+    margin: 0.2em 0.4em;
+}
+
+.tempicon {
+    width: 2em;
+}
+
+.temp,
+.tempicon {
+    margin: 0.5em;
+    font-size: 1.2em;
+    align-self: center;
+}
+
+.change-list {
+    font-size: 1.2em;
+    align-self: center;
+}
+
+.progress-bar-container {
+    position: absolute;
+    width: 32.25em;
+    height: auto;
+    top: 17em;
+    left: 35em;
+    border: 0px solid white;
+    background-color: rgba(255, 255, 255, .05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+}
+
+.info-temp {
+    margin: 0em 0em 1em 1em;
+    padding-top: 1em;
+    width: auto;
+}
+
+hr {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.progress-bar {
+    display: flex;
+    flex-direction: column;
+}
+
+.progress-bar-temp {
+    display: flex;
+    margin-bottom: 2em;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.progress-bar-temp:last-child {
+    margin-bottom: 0;
+    padding-bottom: 1em;
+}
+
+.progress-bar-temp:first-child {
+    margin-top: 1em;
+}
+
+.progress-bar-temp h2,
+h3 {
+    font-size: medium;
+    font-weight: 400;
+    width: 2.66875em;
+}
+
+.progress-bar-icon {
+    width: 1.5em;
+}
+
+.progress-line {
+    width: 16em;
+    background-color: rgba(255, 255, 255, .2);
+    border-radius: 1em;
+    height: 0.4em;
+    position: relative;
+}
+
+.progress-line span {
+    position: absolute;
+    height: 0.4em;
+    border-radius: 1em;
+    background-color: #fff;
+    width: 0;
+    animation: progressBarAnimation 3s linear forwards;
+}
+
+@keyframes progressBarAnimation {
+    to {
+        width: var(--progress-width);
+    }
+}
+
+.animate-progress {
+    animation-name: progressBarAnimation;
+}
+
+.weather-navigation {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.dot.active {
+    background-color: white;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.dot:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}

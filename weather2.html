@@ -2,141 +2,97 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://kit.fontawesome.com/ff01ec0bea.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="weather2.css">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Thickness Example</title>
+  <link href="weather2.css" rel="stylesheet">
 </head>
 
 <body>
-    <div class="weather-container">
-        <div class="weather-content" id="weather-content">
-            <div class="panel">
-                <form id="locationinput" method="post">
-                    <i class="fas fa-location-dot"></i>
-                    <input type="text" class="search" placeholder="Search location..."/>
-                    <button type="submit" class="fas fa-search"></button>
-                    </button>
-                </form>
+  <div class="wrapper">
+    <div class="main">
+      <nav>
+        <ul class="options">
+          <button class="hourly active">today</button>
+          <button class="week">week</button>
+        </ul>
+      </nav>
+      <div class="cards" id="weather-cards"></div>
+      <div class="highlights">
+        <h2 class="heading">highlights</h2>
+        <div class="cards">
+          <div class="card2">
+            <h4 class="card-heading">UV Index</h4>
+            <div class="content">
+              <p class="uv-index">3</p>
+              <p class="uv-text">Moderate</p>
             </div>
-            <ul class="cities">
-                <li class="city">Ahmedabad</li>
-                <li class="city">Vadodara</li>
-                <li class="city">Surat</li>
-                <li class="city">Vasad</li>
-            </ul>
-            <div class="weather-intro">
-                <div class="weather-temp-condition">
-                    <h1 class="temperature">23&#176;</h1>
-                    <div class="temp-icon-description">
-                        <img src="weathericons/raining.png" class="icon" alt="weather-icon">
-                        <span class="condition">Cloudy</span>
-                    </div>
-                </div>
-                <div class="city-time">
-                    <h1 class="name">Ahmedabad,Vastrapur</h1>
-                    <small>
-                        <span class="time">10:30</span>
-                        <span class="day">Tuesday</span>
-                        <span class="date">20th</span>
-                        <span class="month">March</span>
-                    </small>
-                </div>
+          </div>
+          <div class="card2">
+            <h4 class="card-heading">Wind Status</h4>
+            <div class="content">
+              <p class="wind-speed">23</p>
+              <p class="wind-speed-text">km/h</p>
             </div>
-            <div class="list-content">
-                <ul>
-                    <li>
-                        <img src="weathericons/raining.png" class="tempicon" />
-                        <span class="change-list">Now</span>
-                        <span class="temp">23&#176;</span>
-                    </li>
-                    <li>
-                        <img src="weathericons/raining.png" class="tempicon" />
-                        <span class="change-list">11:00</span>
-                        <span class="temp">23&#176;</span>
-                    </li>
-                    <li>
-                        <img src="weathericons/raining.png" class="tempicon" />
-                        <span class="change-list">12:00</span>
-                        <span class="temp">23&#176;</span>
-                    </li>
-                    <li>
-                        <img src="weathericons/raining.png" class="tempicon" />
-                        <span class="change-list">1:00</span>
-                        <span class="temp">23&#176;</span>
-                    </li>
-                    <li>
-                        <img src="weathericons/raining.png" class="tempicon" />
-                        <span class="change-list">2:00</span>
-                        <span class="temp">23&#176;</span>
-                    </li>
-                    <li>
-                        <img src="weathericons/raining.png" class="tempicon" />
-                        <span class="change-list">3:00</span>
-                        <span class="temp">23&#176;</span>
-                    </li>
-                    <li>
-                        <img src="weathericons/raining.png" class="tempicon" />
-                        <span class="change-list">4:00</span>
-                        <span class="temp">23&#176;</span>
-                    </li>
-                </ul>
+          </div>
+          <div class="card2">
+            <h4 class="card-heading">Sunrise</h4>
+            <div class="content">
+              <p class="sun-rise">5:18</p>
+              <p class="sun-rise-text">am</p>
             </div>
-            <div class="progress-bar-container">
-                <h3 class="info-temp">5-Day Forecast</h3>
-                <hr>
-                <div class="progress-bar">
-                    <div class="progress-bar-temp">
-                        <h3 class="tempperday">Today</h3>
-                        <img src="weathericons/raining.png" class="progress-bar-icon"/>
-                        <h2 class="tempday">23&#176;</h2>
-                        <div class="progress-line">
-                            <span class="temp-1"></span>
-                        </div>
-                    </div>
-                    <div class="progress-bar-temp">
-                        <h3 class="tempperday">Wed</h3>
-                        <img src="weathericons/raining.png" class="progress-bar-icon" />
-                        <h2 class="tempday">19&#176;</h2>
-                        <div class="progress-line">
-                            <span class="temp-2"></span>
-                        </div>
-                    </div>
-                    <div class="progress-bar-temp">
-                        <h3 class="tempperday">Thur</h3>
-                        <img src="weathericons/raining.png" class="progress-bar-icon" />
-                        <h2 class="tempday">28&#176;</h2>
-                        <div class="progress-line">
-                            <span class="temp-3"></span>
-                        </div>
-                    </div>
-                    <div class="progress-bar-temp">
-                        <h3 class="tempperday">Fri</h3>
-                        <img src="weathericons/raining.png" class="progress-bar-icon" />
-                        <h2 class="tempday">35&#176;</h2>
-                        <div class="progress-line">
-                            <span class="temp-4"></span>
-                        </div>
-                    </div>
-                    <div class="progress-bar-temp">
-                        <h3 class="tempperday">Sat</h3>
-                        <img src="weathericons/raining.png" class="progress-bar-icon" />
-                        <h2 class="tempday">24&#176;</h2>
-                        <div class="progress-line">
-                            <span class="temp-5"></span>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="card2">
+            <h4 class="card-heading">Sunset</h4>
+            <div class="content">
+              <p class="sun-set">7:18</p>
+              <p class="sun-set-text">pm</p>
             </div>
+          </div>
+          <div class="card2">
+            <h4 class="card-heading">Wind Direction</h4>
+            <div class="content">
+              <p class="winddirection">NPW</p>
+            </div>
+          </div>
+          <div class="card2">
+            <h4 class="card-heading">Visibility</h4>
+            <div class="content">
+              <p class="visibilty">6mi</p>
+              <p class="visibilty-status">Normal</p>
+            </div>
+          </div>
+          <div class="card2">
+            <h4 class="card-heading">Air Quality</h4>
+            <div class="content">
+              <p class="air-quality">20</p>
+              <p class="air-quality-status">Normal</p>
+            </div>
+          </div>
+          <div class="card2">
+            <h4 class="card-heading">Humidity</h4>
+            <div class="content">
+              <p class="humidity">82%</p>
+              <p class="humidity-status">Normal</p>
+            </div>
+          </div>
+          <div class="card2">
+            <h4 class="card-heading">Precipitation</h4>
+            <div class="content">
+              <p class="prec">20</p>
+              <p class="prec-status">Normal</p>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="weather-navigation">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-    </div>
-    <a href="test.html" id="second-page-link" style="display: none;"></a>
-    <script src="weather2.js" defer></script>
+  </div>
+  <div class="weather-navigation">
+    <span class="dot"></span>
+    <span class="dot active"></span>
+  </div>
+  <a href="weather1.html" id="second-page-link" style="display: none;"></a>
+  <script src="weather2.js"></script>
 </body>
 
 </html>

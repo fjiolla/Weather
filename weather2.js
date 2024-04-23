@@ -1,153 +1,105 @@
 document.addEventListener('DOMContentLoaded', function () {
     const dots = document.querySelectorAll('.dot');
-    const locationInput = document.getElementById('locationinput');
-    const cities = document.querySelector('.cities');
+    const buttons = document.querySelectorAll('.options button');
 
     dots.forEach((dot, index) => {
         dot.addEventListener('click', function () {
             dots.forEach(dot => dot.classList.remove('active'));
             dot.classList.add('active');
-            if (index === 1) {
+            if (index === 0) {
                 document.getElementById('second-page-link').click();
             }
         });
     });
 
-    locationInput.addEventListener('click', function (event) {
-        cities.classList.toggle('active');
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            buttons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+        });
     });
 });
 
-const bg = document.querySelector('.weather-container');
-const textElements = document.querySelectorAll('.temperature, .condition, .panel i, .panel button, .name, .time, .day, .date, .month, .change-list, .temp, .tempperday, .tempday, .search, .info-temp, .city, .progress-line');
-const textLower = document.querySelectorAll('.temperature, .condition, .name, .time, .day, .date, .month, .tempperday, .tempday, .info-temp');
-const btn1 = document.querySelector('.search');
-const btn2 = document.querySelector('.panel button');
-const cities = document.querySelectorAll('.city');
-const search = document.querySelector('.search');
-const form = document.getElementById('locationinput');
-const temp = document.querySelector('.temperature');
-const icon = document.querySelector('.icon');
-const condition = document.querySelector('.condition');
-const placename = document.querySelector('.name');
-const date = document.querySelector('.date');
-const day = document.querySelector('.day');
-const month = document.querySelector('.month');
-const tempperhouricon = document.querySelectorAll('.tempicon');
-const tempperhourtime = document.querySelectorAll('.change-list');
-const tempperhour = document.querySelectorAll('.temp');
-const tempperday = document.querySelectorAll('.tempperday');
-const tempperdayicon = document.querySelectorAll('.progress-bar-icon');
-const tempday = document.querySelectorAll('.tempday');
 
+const bg = document.querySelector('body');
+const textElements = document.querySelectorAll('.card-heading,.uv-text, .wind-speed-text, .uv-index, .wind-speed,.sun-rise, .sun-rise-text, .sun-set, .sun-set-text, .heading, .winddirection, .visibilty, .visibilty-status, .air-quality, .air-quality-status, .humidity, .humidity-status, .prec, .prec-status')
+const textLower = document.querySelectorAll('.sun-set, .sun-set-text, .heading, .winddirection, .visibilty, .visibilty-status, .air-quality, .air-quality-status, .humidity, .humidity-status, .prec, .prec-status')
+const hourly = document.querySelector('.hourly.active');
+const week = document.querySelector('.week-active');
+const uvindex = document.querySelector('.uv-index');
+const uvtext = document.querySelector('.uv-text');
+const windspeed = document.querySelector('.wind-speed');
+const windspeedtext = document.querySelector('.wind-speed-text');
+const sunrise = document.querySelector('.sun-rise');
+const sunrisetext = document.querySelector('.sun-rise-text');
+const sunset = document.querySelector('.sun-set');
+const sunsettext = document.querySelector('.sun-set-text');
+const winddirection = document.querySelector('.winddirection')
+const visibility = document.querySelector('.visibilty');
+const visibilitystatus = document.querySelector('.visibilty-status');
+const aq = document.querySelector('.air-quality');
+const aqstatus = document.querySelector('.air-quality-status');
+const humidity = document.querySelector('.humidity');
+const humiditystatus = document.querySelector('.humidity-status');
+const prec = document.querySelector('.prec');
+const precstatus = document.querySelector('.prec-status');
 
 let cityInput = "Ahmedabad";
 
-cities.forEach((city) => {
-    city.addEventListener('click', (e) => {
-        cityInput = e.target.innerHTML;
-        fetchWeatherData();
-        fetchData();
-        handleSubmit();
-    });
-})
-
-form.addEventListener('submit', (e) => {
-    if (search.value.length == 0) {
-        alert('Please enter a city name');
-    } else {
-        cityInput = search.value;
-        fetchWeatherData();
-        fetchData();
-        handleSubmit();
-        search.value = "";
-    }
-    e.preventDefault();
+window.addEventListener('load', () => {
+    cityInput = localStorage.getItem('search');
+    console.log("retrieved", cityInput);
+    retrieveData();
+    astronomy();
+    fetchData();
 });
 
-function handleSubmit() {
-    localStorage.setItem('search', JSON.stringify(cityInput));
-    console.log("Stored in localStorage:", cityInput);
-}
+document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.options button');
 
-function getCurrentDateAndMonth() {
-    const currentDate = new Date();
-    const options = { day: 'numeric', month: 'long' };
-    const formattedDate = currentDate.toLocaleDateString('en-US', options);
-    return formattedDate.split(' ');
-}
-const [currentDate, currentMonth] = getCurrentDateAndMonth();
-date.textContent = currentDate;
-month.textContent = currentMonth;
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            buttons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
 
-function dayOfTheWeek() {
-    const currentDate = new Date();
-    const weekday = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday"
-    ];
-    return weekday[currentDate.getDay()];
-}
+            if (this.classList.contains('hourly')) {
+                retrieveData();
+            } else if (this.classList.contains('week')) {
+                retrieveWeeklyData();
+            }
+        });
+    });
+});
 
-const currentDay = dayOfTheWeek();
-day.textContent = currentDay;
 
-function updateTime() {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const timeString = `${hours}:${minutes}`;
-    document.querySelector('.time').textContent = timeString;
-}
 
-updateTime();
-setInterval(updateTime, 1000);
-
-function fetchWeatherData() {
-    fetch(`http://api.weatherapi.com/v1/forecast.json?key=8a8f10d7c5f645e2a0e94049241404&q=${cityInput}&days=5&aqi=no&alerts=no`)
+function retrieveData() {
+    fetch(`http://api.weatherapi.com/v1/forecast.json?key=8a8f10d7c5f645e2a0e94049241404&q=${cityInput}&days=7&aqi=yes&alerts=no`)
         .then(response => response.json())
         .then(data => {
-            const today = data.forecast.forecastday[0];
-            const currentHour = new Date().getHours();
+            console.log(data);
+            windspeed.innerHTML = data.current.wind_kph;
+            updateStatus(windspeed, data.current.wind_kph, 'wind_speed');
 
-            const todayDate = new Date(today.date);
-            date.textContent = todayDate.getDate();
-            month.textContent = todayDate.toLocaleString('en-us', { month: 'long' });
-            day.textContent = dayOfTheWeek();
+            winddirection.innerHTML = data.current.wind_dir;
+            updateStatus(winddirection, data.current.wind_dir, 'winddirection');
 
-            for (let i = currentHour; i < currentHour + 7; i++) {
-                const hourIndex = i % 24;
-                const hour = today.hour[hourIndex];
-                tempperhour[i - currentHour].innerHTML = hour.temp_c + "&deg;";
-                tempperhourtime[i - currentHour].textContent = hour.time.split(' ')[1];
-                tempperhouricon[i - currentHour].src = hour.condition.icon;
-            }
+            prec.innerHTML = data.forecast.forecastday[0].day.totalprecip_in;
+            updateStatus(prec, data.forecast.forecastday[0].day.totalprecip_in, 'precipitation');
 
-            const forecasts = data.forecast.forecastday.slice(0, 5);
-            forecasts.forEach((forecast, index) => {
-                tempperday[index].textContent = new Date(forecast.date).toLocaleString('en-us', { weekday: 'short' });
-                tempperdayicon[index].src = forecast.day.condition.icon;
-                tempday[index].innerHTML = forecast.day.avgtemp_c + "&deg;";
+            visibility.innerHTML = data.forecast.forecastday[0].day.avgvis_km;
+            updateStatus(visibility, data.forecast.forecastday[0].day.avgvis_km, 'visibility');
 
-                const temp = forecast.day.avgtemp_c;
-                const progressBar = document.querySelector(`.temp-${index + 1}`);
-                const width = (temp / 57) * 16;
-                progressBar.style.setProperty('--progress-width', `${width}em`);
-                progressBar.classList.add('animate-progress');
+            aq.innerHTML = data.forecast.forecastday[0].day.air_quality['us-epa-index'];
+            updateStatus(aq, data.forecast.forecastday[0].day.air_quality['us-epa-index'], 'air_quality');
 
-                if (temp < 20) {
-                    progressBar.style.backgroundColor = 'rgba(135,206,235,0.3)';
-                } else if (temp >= 20 && temp <= 30) {
-                    progressBar.style.backgroundColor = 'rgba(211,211,211,0.3)';
-                } else {
-                    progressBar.style.backgroundColor = 'rgba(255,192,203,0.3)';
-                }
-            });
+            humidity.innerHTML = data.forecast.forecastday[0].day.avghumidity;
+            updateStatus(humidity, data.forecast.forecastday[0].day.avghumidity, 'humidity');
+
+            uvindex.innerHTML = data.forecast.forecastday[0].day.uv;
+            updateStatus(uvindex, data.forecast.forecastday[0].day.uv, 'uv_index');
+
+            astronomy();
         })
         .catch(error => {
             console.error('Error fetching weather data:', error);
@@ -155,126 +107,202 @@ function fetchWeatherData() {
         });
 }
 
+function updateStatus(element, value, dataType) {
+    const statusElement = element.nextElementSibling;
+
+    if (statusElement) {
+        let status = '';
+
+        switch (dataType) {
+            case 'air_quality':
+                if (value <= 50) status = 'Good';
+                else if (value <= 100) status = 'Moderate';
+                else if (value <= 150) status = 'Unhealthy for Sensitive Groups';
+                else if (value <= 200) status = 'Unhealthy';
+                else if (value <= 300) status = 'Very Unhealthy';
+                else status = 'Hazardous';
+                break;
+            case 'precipitation':
+                status = value > 0 ? 'Rainy' : 'Dry';
+                break;
+            case 'visibility':
+                status = value >= 10 ? 'Normal' : 'Low';
+                break;
+            case 'humidity':
+                status = value >= 60 ? 'Humid' : 'Dry';
+                break;
+            case 'uv_index':
+                if (value <= 2) status = 'Low';
+                else if (value <= 5) status = 'Moderate';
+                else if (value <= 7) status = 'High';
+                else if (value <= 10) status = 'Very High';
+                else status = 'Extreme';
+                break;
+            case 'wind_direction':
+                status = value;
+                break;
+            default:
+                status = 'Unknown';
+        }
+
+        statusElement.textContent = status;
+    }
+}
+
+function retrieveWeeklyData() {
+    fetch(`http://api.weatherapi.com/v1/forecast.json?key=8a8f10d7c5f645e2a0e94049241404&q=London&days=7&aqi=yes&alerts=no`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+
+            if (data.forecast && data.forecast.forecastday) { // Check if forecast data exists
+                const forecasts = data.forecast.forecastday.slice(0, 6); // Get the first 7 days of forecast
+                const totalDays = forecasts.length;
+
+                let totalWindSpeed = 0;
+                let totalPrecipitation = 0;
+                let totalVisibility = 0;
+                let totalAirQuality = 0;
+                let totalHumidity = 0;
+                let totalUVIndex = 0;
+
+                forecasts.forEach(forecast => {
+                    totalWindSpeed += forecast.day.maxwind_kph;
+                    totalPrecipitation += forecast.day.totalprecip_mm;
+                    totalVisibility += forecast.day.avgvis_km;
+                    if (forecast.day && forecast.day.air_quality && forecast.day.air_quality['us-epa-index']) {
+                        totalAirQuality += forecast.day.air_quality['us-epa-index'];
+                    } else {
+                        console.warn('Missing or invalid air quality data for forecast:', forecast);
+                    }
+                    totalHumidity += forecast.day.avghumidity;
+                    totalUVIndex += forecast.day.uv;
+                });
+
+                const averageWindSpeed = totalWindSpeed / totalDays;
+                const averagePrecipitation = totalPrecipitation / totalDays;
+                const averageVisibility = totalVisibility / totalDays;
+                const averageAirQuality = totalAirQuality / totalDays;
+                const averageHumidity = totalHumidity / totalDays;
+                const averageUVIndex = totalUVIndex / totalDays;
+
+                // Update UI to display average values
+                windspeed.innerHTML = averageWindSpeed.toFixed(2); // Round to 2 decimal places
+                updateStatus(windspeed, averageWindSpeed, 'wind_speed');
+
+                prec.innerHTML = averagePrecipitation.toFixed(2); // Round to 2 decimal places
+                updateStatus(prec, averagePrecipitation, 'precipitation');
+
+                visibility.innerHTML = averageVisibility.toFixed(2); // Round to 2 decimal places
+                updateStatus(visibility, averageVisibility, 'visibility');
+
+                aq.innerHTML = Math.round(averageAirQuality); // Round to nearest integer
+                updateStatus(aq, averageAirQuality, 'air_quality');
+
+                humidity.innerHTML = Math.round(averageHumidity); // Round to nearest integer
+                updateStatus(humidity, averageHumidity, 'humidity');
+
+                uvindex.innerHTML = averageUVIndex.toFixed(2); // Round to 2 decimal places
+                updateStatus(uvindex, averageUVIndex, 'uv_index');
+                fetchData();
+            } else {
+                console.error('No forecast data available.');
+                alert('No forecast data available. Please try again later.');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching weekly weather data:', error);
+            alert('Error fetching weekly weather data. Please try again later.');
+        });
+}
+
+
+function astronomy() {
+    fetch(`http://api.weatherapi.com/v1/astronomy.json?key=6e588b6ddd9e4dd980974334243103&q=${cityInput}&dt=today`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            const sunriseTime = data.astronomy.astro.sunrise;
+            const [time, period] = sunriseTime.split(' ');
+            sunrise.innerHTML = time;
+            sunrisetext.innerHTML = period;
+
+            const sunsetTime = data.astronomy.astro.sunset;
+            const [time2, period2] = sunsetTime.split(' ');
+            sunset.innerHTML = time2;
+            sunsettext.innerHTML = period2;
+        })
+        .catch(error => {
+            console.error('Error fetching weather data:', error);
+            alert('Error fetching weather data. Please try again later.');
+        });
+}
+
+
 function fetchData() {
     fetch(`http://api.weatherapi.com/v1/current.json?key=6e588b6ddd9e4dd980974334243103&q=${cityInput}&aqi=no`)
         .then(response => response.json())
         .then(data => {
-            temp.innerHTML = data.current.temp_c + "&#176;";
-            condition.innerHTML = data.current.condition.text;
-            placename.innerHTML = data.location.name;
-            const iconUrl = data.current.condition.icon;
-            icon.src = iconUrl;
-            
             const conditionText = data.current.condition.text.toLowerCase();
             const isDay = data.current.is_day === 1;
 
-            if (
-               conditionText.includes('clear') ||
-               conditionText.includes('overcast')
-            )
-            {
+            if (conditionText.includes('clear') || conditionText.includes('overcast')) {
                 if (isDay) {
                     bg.style.backgroundImage = "url('weathericons/clear_day.jpg')";
                     textElements.forEach(element => {
                         element.style.color = 'black';
-                    })
+                    });
+                    textLower.forEach(element => {
+                        element.style.color = 'white';
+                    });
                 } else {
                     bg.style.backgroundImage = "url('weathericons/clear_night.jpg')";
                     textElements.forEach(element => {
                         element.style.color = 'white';
-                    })
+                    });
                 }
-            }
-            else if (
-                conditionText.includes('sunny')
-            ) {
+            } else if (conditionText.includes('sunny')) {
                 bg.style.backgroundImage = "url('weathericons/clear_day.jpg')";
                 textElements.forEach(element => {
                     element.style.color = 'black';
-                })
+                });
                 textLower.forEach(element => {
                     element.style.color = 'white';
-                })
-                btn1.style.backgroundColor = 'rgba(0, 0, 0, .1)';
-                btn2.style.backgroundColor = 'rgba(0, 0, 0, .1)';
-            }
-            else if (
-                conditionText.includes('cloudy') ||
-                conditionText.includes('overcast')
-            ) {
+                });
+            } else if (conditionText.includes('cloudy') || conditionText.includes('overcast')) {
                 bg.style.backgroundImage = "url('weathericons/cloudy.jpg')";
                 textElements.forEach(element => {
-                    element.style.color = 'black';
-                })
-            } else if (
-                conditionText.includes('rain') ||
-                conditionText.includes('shower') ||
-                conditionText.includes('mist') 
-            ) {
+                    element.style.color = 'white';
+                });
+                textLower.forEach(element => {
+                    element.style.color = 'white';
+                });
+            } else if (conditionText.includes('rain') || conditionText.includes('shower') || conditionText.includes('mist')) {
                 bg.style.backgroundImage = "url('weathericons/rain.jpg')";
-            } else if (
-                conditionText.includes('snow')
-            ) {
+                textElements.forEach(element => {
+                    element.style.color = 'black';
+                });
+
+            } else if (conditionText.includes('snow')) {
                 bg.style.backgroundImage = "url('weathericons/snow.jpg')";
                 textElements.forEach(element => {
                     element.style.color = 'black';
-                })
-            }
-            else {
+                });
+            } else {
                 bg.style.backgroundImage = "url('weathericons/clear_day.jpg')";
                 textElements.forEach(element => {
                     element.style.color = 'black';
-                })
+                });
                 textLower.forEach(element => {
                     element.style.color = 'white';
-                })
+                });
             }
+        })
+        .catch(error => {
+            console.error('Error fetching current weather data:', error);
+            alert('Error fetching current weather data. Please try again later.');
         });
 }
-
-
-/*
-const WEATHER_CODES = {
-    CLEAR_DAY: [1000, 1003],
-    CLEAR_NIGHT: [1001, 1004],
-    CLOUDY: [1195],
-    RAIN: [1063, 1150, 1153, 1180, 1183, 1186, 1189, 1192, 1198, 1201, 1240, 1243, 1246, 1249, 1252, 1255, 1258, 1261, 1264],
-    SNOW: [1066, 1069, 1072, 1168, 1171, 1174, 1204, 1207, 1210, 1213, 1216, 1219, 1222, 1225, 1237],
-};
-
-function fetchBackgroundImage() {
-    fetch(`http://api.weatherapi.com/v1/current.json?key=6e588b6ddd9e4dd980974334243103&q=${cityInput}&aqi=no`)
-        .then(response => response.json())
-        .then(data => {
-            const weatherCode = data.current.condition.code; 
-            changeBackgroundImage(weatherCode);
-        });
-}
-
-function changeBackgroundImage(weatherCode) {
-    const bg = document.querySelector('.weather-container');
-    const app = document.querySelector('.weather-content');
-
-    if (WEATHER_CODES.CLEAR_DAY.includes(weatherCode)) {
-        bg.style.backgroundImage = "url('weathericons/clear_day.jpg')";
-        app.style.backgroundImage = "url('weathericons/clear_day.jpg')";
-    } else if (WEATHER_CODES.CLEAR_NIGHT.includes(weatherCode)) {
-        bg.style.backgroundImage = "url('weathericons/clear_night.jpg')";
-        app.style.backgroundImage = "url('weathericons/clear_night.jpg')";
-    } else if (WEATHER_CODES.CLOUDY.includes(weatherCode)) {
-        bg.style.backgroundImage = "url('weathericons/cloudy.jpg')";
-        app.style.backgroundImage = "url('weathericons/cloudy.jpg')";
-    } else if (WEATHER_CODES.RAIN.includes(weatherCode)) {
-        bg.style.backgroundImage = "url('weathericons/raining.png')";
-        app.style.backgroundImage = "url('weathericons/raining.png')";
-    } else if (WEATHER_CODES.SNOW.includes(weatherCode)) {
-        bg.style.backgroundImage = "url('weathericons/snow.jpg')";
-        app.style.backgroundImage = "url('weathericons/snow.jpg')";
-    } else {
-        bg.style.backgroundImage = "url('weathericons/snow.jpg')";
-        app.style.backgroundImage = "url('weathericons/snow.jpg')";
-    }
-}*/
 
 fetchData();
-fetchWeatherData();
+retrieveData();
