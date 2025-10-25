@@ -37,7 +37,7 @@ A beautiful and interactive weather application that provides real-time weather 
 
 1. Clone the repository:
 ```bash
-git clone [https://github.com/fjiolla/Weather.git]
+git clone <https://github.com/fjiolla/Weather.git>
 cd weather-app
 ```
 
